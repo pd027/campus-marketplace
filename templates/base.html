@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Campus Marketplace{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/forms.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <nav class="navbar">
+            <div class="logo">
+                <a href="{{ url_for('routes.index') }}">Campus Marketplace</a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="{{ url_for('routes.index') }}">Home</a></li>
+                {% if g.user %}
+                    <li><a href="{{ url_for('routes.dashboard') }}">Dashboard</a></li>
+                    {% if g.user.user_type == 'admin' %}
+                        <li><a href="{{ url_for('routes.manage_students') }}">Manage Students</a></li>
+                        <li><a href="{{ url_for('routes.inventory') }}">College Inventory</a></li>
+                    {% endif %}
+                    <li><a href="{{ url_for('routes.user_profile') }}">Profile</a></li>
+                    <li><a href="{{ url_for('routes.logout') }}">Logout</a></li>
+                {% else %}
+                    <li><a href="{{ url_for('routes.login') }}">Login</a></li>
+                    <li><a href="{{ url_for('routes.register') }}">Register</a></li>
+                {% endif %}
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    <div class="flashes">
+                        {% for category, message in messages %}
+                            <div class="flash {{ category }}">
+                                {{ message }}
+                                <span class="close-btn">&times;</span>
+                            </div>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            {% endwith %}
+
+            {% block content %}{% endblock %}
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Campus Marketplace</h3>
+                <p>A platform for students to buy, sell, and borrow items on campus.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{{ url_for('routes.index') }}">Home</a></li>
+                    {% if g.user %}
+                        <li><a href="{{ url_for('routes.dashboard') }}">Dashboard</a></li>
+                    {% else %}
+                        <li><a href="{{ url_for('routes.login') }}">Login</a></li>
+                        <li><a href="{{ url_for('routes.register') }}">Register</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Contact</h3>
+                <p>Email: support@campusmarketplace.com</p>
+                <p>Phone: (123) 456-7890</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2025 Campus Marketplace. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript for flash message close button
+        document.addEventListener('DOMContentLoaded', function() {
+            const closeButtons = document.querySelectorAll('.close-btn');
+            closeButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    this.parentElement.style.display = 'none';
+                });
+            });
+        });
+    </script>
+</body>
+</html>

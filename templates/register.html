@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="auth-form-container">
+        <div class="auth-form-header">
+            <h2>Create an Account</h2>
+            <p>Join the Campus Marketplace community</p>
+        </div>
+        
+        <form method="post">
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="full_name">Full Name</label>
+                <input type="text" id="full_name" name="full_name" class="form-control" required>
+            </div>
+            
+            <div class="form-group">
+                <label for="contact_number">Contact Number (optional)</label>
+                <input type="tel" id="contact_number" name="contact_number" class="form-control">
+            </div>
+            
+            <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" class="form-control" required>
+                <div class="help-text">Must be at least 8 characters</div>
+            </div>
+            
+            <div class="form-group">
+                <label for="confirm_password">Confirm Password</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+            </div>
+            
+            <div class="form-actions">
+                <button type="submit" class="btn btn-primary w-100">Register</button>
+            </div>
+        </form>
+        
+        <div class="auth-form-footer">
+            <p>Already have an account?</p>
+            <a href="{{ url_for('routes.login') }}" class="btn btn-secondary w-100">Login</a>
+        </div>
+    </div>
+{% endblock %}

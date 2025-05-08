@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}Add New Item - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="form-container">
+        <div class="form-header">
+            <h2>Add New Item</h2>
+            <p>List your item for selling or lending</p>
+        </div>
+        
+        <form method="post" enctype="multipart/form-data">
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="title">Item Title</label>
+                    <input type="text" id="title" name="title" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="">-- Select Category --</option>
+                        <option value="Books">Books</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Furniture">Furniture</option>
+                        <option value="Clothing">Clothing</option>
+                        <option value="Kitchen">Kitchen</option>
+                        <option value="Sports">Sports & Outdoors</option>
+                        <option value="Other">Other</option>
+                    </select>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="description">Description</label>
+                <textarea id="description" name="description" class="form-control" rows="5"></textarea>
+                <div class="help-text">Provide details about your item including brand, age, features, etc.</div>
+            </div>
+            
+            <div class="form-grid">
+                <div class="form-group">
+                    <label for="condition_status">Condition</label>
+                    <select id="condition_status" name="condition_status" class="form-control" required>
+                        <option value="">-- Select Condition --</option>
+                        <option value="New">New</option>
+                        <option value="Like New">Like New</option>
+                        <option value="Very Good">Very Good</option>
+                        <option value="Good">Good</option>
+                        <option value="Acceptable">Acceptable</option>
+                        <option value="For Parts">For Parts</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="price">Price ($)</label>
+                    <input type="number" id="price" name="price" class="form-control" min="0" step="0.01" required>
+                    <div class="help-text">Set to 0 if free or for borrowing only</div>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <div class="file-upload">
+                    <label for="image">Item Image</label>
+                    <input type="file" id="image" name="image" accept="image/*">
+                    <label for="image" class="file-upload-btn">
+                        <i class="fas fa-cloud-upload-alt"></i> Choose File
+                    </label>
+                    <span class="file-name">No file chosen</span>
+                </div>
+                <div class="help-text">Upload a clear image of your item (Max size: 5MB)</div>
+            </div>
+            
+            <div class="form-actions">
+                <a href="{{ url_for('routes.dashboard') }}" class="btn btn-secondary">Cancel</a>
+                <button type="submit" class="btn btn-primary">Add Item</button>
+            </div>
+        </form>
+    </div>
+    
+    <script>
+        // Display filename when user selects a file
+        document.addEventListener('DOMContentLoaded', function() {
+            const fileInput = document.
+
+            {% endblock %}

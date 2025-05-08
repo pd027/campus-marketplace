@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+
+{% block title %}My Profile - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>My Profile</h1>
+        <div>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Profile Information</h2>
+        </div>
+        <div class="card-body">
+            <div class="profile-container">
+                <div class="profile-avatar">
+                    {% if user.profile_picture %}
+                        <img src="{{ url_for('static', filename='uploads/' + user.profile_picture) }}" alt="Profile Picture" class="profile-img">
+                    {% else %}
+                        <i class="fas fa-user-circle fa-6x" style="color: #3498db;"></i>
+                    {% endif %}
+                </div>
+                <div class="profile-info">
+                    <div class="profile-detail">
+                        <h3>{{ user.full_name }}</h3>
+                        <p><i class="fas fa-user"></i> Username: {{ user.username }}</p>
+                        <p><i class="fas fa-envelope"></i> Email: {{ user.email }}</p>
+                        <p><i class="fas fa-university"></i> Department: {{ user.department or 'Not specified' }}</p>
+                        <p><i class="fas fa-graduation-cap"></i> Year: {{ user.year or 'Not specified' }}</p>
+                        <p><i class="fas fa-phone"></i> Contact: {{ user.contact_number or 'Not provided' }}</p>
+                        <p><i class="fas fa-calendar-alt"></i> Member since: {{ user.created_at }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="profile-actions mt-20">
+                <a href="{{ url_for('routes.edit_profile') }}" class="btn btn-primary">Edit Profile</a>
+                <a href="{{ url_for('routes.change_password') }}" class="btn btn-secondary">Change Password</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activity Summary -->
+    <div class="card mt-20">
+        <div class="card-header">
+            <h2>Activity Summary</h2>
+        </div>
+        <div class="card-body">
+            <div class="stats-container">
+                <div class="stat-card blue">
+                    <h3>{{ user_items|default([])|length }}</h3>
+                    <p>Items Listed</p>
+                </div>
+                <div class="stat-card green">
+                    <h3>{{ approved_requests|default([])|length }}</h3>
+                    <p>Approved Requests</p>
+                </div>
+                <div class="stat-card orange">
+                    <h3>{{ pending_requests|default([])|length }}</h3>
+                    <p>Pending Requests</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Preferences -->
+    <div class="card mt-20">
+        <div class="card-header">
+            <h2>Notification Preferences</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" action="{{ url_for('routes.update_preferences') }}">
+                <div class="form-check">
+                    <input type="checkbox" id="email_notifications" name="email_notifications" class="form-check-input" {% if user.email_notifications %}checked{% endif %}>
+                    <label for="email_notifications" class="form-check-label">Email Notifications</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="request_alerts" name="request_alerts" class="form-check-input" {% if user.request_alerts %}checked{% endif %}>
+                    <label for="request_alerts" class="form-check-label">Request Alerts</label>
+                </div>
+                <div class="form-check">
+                    <input type="checkbox" id="system_updates" name="system_updates" class="form-check-input" {% if user.system_updates %}checked{% endif %}>
+                    <label for="system_updates" class="form-check-label">System Updates</label>
+                </div>
+                <div class="form-actions mt-10">
+                    <button type="submit" class="btn btn-primary">Save Preferences</button>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

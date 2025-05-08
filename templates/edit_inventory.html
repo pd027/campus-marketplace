@@ -1,0 +1,105 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Inventory Item - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Edit Inventory Item</h1>
+        <div>
+            <a href="{{ url_for('routes.inventory') }}" class="btn btn-secondary">Back to Inventory</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Edit Item Details</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('routes.edit_inventory', inventory_id=inventory_item.inventory_id) }}" method="post">
+                <div class="form-group">
+                    <label for="item_name">Item Name</label>
+                    <input type="text" id="item_name" name="item_name" class="form-control" value="{{ inventory_item.item_name }}" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <option value="Electronics" {% if inventory_item.category == 'Electronics' %}selected{% endif %}>Electronics</option>
+                        <option value="Sports Equipment" {% if inventory_item.category == 'Sports Equipment' %}selected{% endif %}>Sports Equipment</option>
+                        <option value="Lab Equipment" {% if inventory_item.category == 'Lab Equipment' %}selected{% endif %}>Lab Equipment</option>
+                        <option value="Tools" {% if inventory_item.category == 'Tools' %}selected{% endif %}>Tools</option>
+                        <option value="Others" {% if inventory_item.category == 'Others' %}selected{% endif %}>Others</option>
+                    </select>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" min="1" value="{{ inventory_item.quantity }}" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" class="form-control" value="{{ inventory_item.location }}" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="available" {% if inventory_item.status == 'available' %}selected{% endif %}>Available</option>
+                        <option value="in_use" {% if inventory_item.status == 'in_use' %}selected{% endif %}>In Use</option>
+                        <option value="maintenance" {% if inventory_item.status == 'maintenance' %}selected{% endif %}>Maintenance</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes (Optional)</label>
+                    <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Any additional information about the item">{{ inventory_item.notes or '' }}</textarea>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Update Inventory Item</button>
+                    <a href="{{ url_for('routes.inventory') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Item History -->
+    <div class="card mt-20">
+        <div class="card-header">
+            <h2>Item History</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Action</th>
+                            <th>User</th>
+                            <th>Details</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- This would typically be populated from a history table in your database -->
+                        <tr>
+                            <td>{{ inventory_item.updated_at }}</td>
+                            <td>Last Update</td>
+                            <td>Admin</td>
+                            <td>Status change or quantity update</td>
+                        </tr>
+                        <tr>
+                            <td>{{ inventory_item.created_at }}</td>
+                            <td>Created</td>
+                            <td>Admin</td>
+                            <td>Initial item creation</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

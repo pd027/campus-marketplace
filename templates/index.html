@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Welcome to Campus Marketplace</h1>
+        <div>
+            {% if g.user %}
+                <a href="{{ url_for('routes.add_item') }}" class="btn btn-primary">Add New Item</a>
+            {% else %}
+                <a href="{{ url_for('routes.register') }}" class="btn btn-primary">Join Now</a>
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="card mb-20">
+        <div class="card-body">
+            <h2 class="section-header">Browse Available Items</h2>
+            
+            <!-- Categories and Filters -->
+            <div class="d-flex justify-between mb-20">
+                <div>
+                    <span class="badge badge-primary">All</span>
+                    <span class="badge">Books</span>
+                    <span class="badge">Electronics</span>
+                    <span class="badge">Furniture</span>
+                    <span class="badge">Clothing</span>
+                    <span class="badge">Other</span>
+                </div>
+                <div>
+                    <select class="form-control">
+                        <option>Sort by: Newest</option>
+                        <option>Sort by: Price (Low to High)</option>
+                        <option>Sort by: Price (High to Low)</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- Items Grid -->
+            {% if items %}
+                <div class="item-grid">
+                    {% for item in items %}
+                        <div class="item-card">
+                            <div class="item-image">
+                                {% if item.image_filename %}
+                                    <img src="{{ url_for('static', filename='uploads/' + item.image_filename) }}" alt="{{ item.title }}">
+                                {% else %}
+                                    <i class="fas fa-image fa-3x" style="color: #ddd;"></i>
+                                {% endif %}
+                            </div>
+                            <div class="item-details">
+                                <h3 class="item-title">{{ item.title }}</h3>
+                                <p class="item-price">${{ "%.2f"|format(item.price) }}</p>
+                                <span class="item-category">{{ item.category }}</span>
+                                <p>Condition: {{ item.condition_status }}</p>
+                                <div class="item-actions">
+                                    <a href="{{ url_for('routes.request_item', item_id=item.item_id) }}" class="btn btn-primary">Request</a>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="text-center">
+                    <p>No items available at the moment.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- App Features Section -->
+    <div class="stats-container">
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-exchange-alt fa-3x mb-10" style="color: #3498db;"></i>
+                <h3>Buy & Sell</h3>
+                <p>Buy and sell items with fellow students on campus.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-handshake fa-3x mb-10" style="color: #2ecc71;"></i>
+                <h3>Borrow</h3>
+                <p>Borrow items from friends and classmates when needed.</p>
+            </div>
+        </div>
+        <div class="card">
+            <div class="card-body text-center">
+                <i class="fas fa-university fa-3x mb-10" style="color: #f39c12;"></i>
+                <h3>Campus Resources</h3>
+                <p>Access college inventory and shared resources.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- How It Works -->
+    <div class="card mt-20">
+        <div class="card-header">
+            <h2>How It Works</h2>
+        </div>
+        <div class="card-body">
+            <div class="stats-container">
+                <div>
+                    <h3 class="text-center">1. Sign Up</h3>
+                    <p>Create an account to access all features of the Campus Marketplace.</p>
+                </div>
+                <div>
+                    <h3 class="text-center">2. List Your Items</h3>
+                    <p>Add items you want to sell or lend to fellow students.</p>
+                </div>
+                <div>
+                    <h3 class="text-center">3. Connect</h3>
+                    <p>Request items from other students or respond to requests.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

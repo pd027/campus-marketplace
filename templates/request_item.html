@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block title %}Request Item - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Request to Borrow Item</h1>
+        <div>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Item Details</h2>
+        </div>
+        <div class="card-body">
+            <div class="item-details-container">
+                <div class="item-image">
+                    {% if item.image_filename %}
+                        <img src="{{ url_for('static', filename='uploads/' + item.image_filename) }}" alt="{{ item.title }}">
+                    {% else %}
+                        <i class="fas fa-image fa-5x" style="color: #ddd;"></i>
+                    {% endif %}
+                </div>
+                <div class="item-info">
+                    <h3>{{ item.title }}</h3>
+                    <p class="item-price">${{ "%.2f"|format(item.price) }}</p>
+                    <p><strong>Category:</strong> {{ item.category }}</p>
+                    <p><strong>Condition:</strong> {{ item.condition_status }}</p>
+                    <p><strong>Owner:</strong> {{ item.owner_name }}</p>
+                    <p><strong>Availability:</strong> 
+                        {% if item.is_available %}
+                            <span class="badge badge-success">Available</span>
+                        {% else %}
+                            <span class="badge badge-warning">Currently Unavailable</span>
+                        {% endif %}
+                    </p>
+                    <div class="item-description">
+                        <h4>Description</h4>
+                        <p>{{ item.description }}</p>
+                    </div>
+                </div>
+            </div>
+
+            {% if item.is_available %}
+                <div class="request-form mt-20">
+                    <h3>Request to Borrow</h3>
+                    <form action="{{ url_for('routes.request_item', item_id=item.item_id) }}" method="post">
+                        <div class="form-group">
+                            <label for="notes">Message to Owner (Optional)</label>
+                            <textarea name="notes" id="notes" class="form-control" rows="4" placeholder="Explain why you need this item and how long you might need it for..."></textarea>
+                        </div>
+                        <div class="form-actions">
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                            <a href="{{ url_for('routes.index') }}" class="btn btn-secondary">Cancel</a>
+                        </div>
+                    </form>
+                </div>
+            {% else %}
+                <div class="alert alert-warning mt-20">
+                    <p>This item is currently not available for borrowing. Please check back later or browse other items.</p>
+                    <a href="{{ url_for('routes.index') }}" class="btn btn-primary mt-10">Browse Other Items</a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

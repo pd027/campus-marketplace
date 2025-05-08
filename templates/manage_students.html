@@ -1,0 +1,142 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Students - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Manage Students</h1>
+        <div>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Student Accounts</h2>
+        </div>
+        <div class="card-body">
+            <div class="table-responsive">
+                {% if students %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Username</th>
+                                <th>Full Name</th>
+                                <th>Email</th>
+                                <th>Contact</th>
+                                <th>Join Date</th>
+                                <th>Items Listed</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for student in students %}
+                                <tr>
+                                    <td>{{ student.user_id }}</td>
+                                    <td>{{ student.username }}</td>
+                                    <td>{{ student.full_name }}</td>
+                                    <td>{{ student.email }}</td>
+                                    <td>{{ student.contact_number or 'Not provided' }}</td>
+                                    <td>{{ student.created_at }}</td>
+                                    <td>{{ student.items_count if student.items_count else 0 }}</td>
+                                    <td>
+                                        <div class="btn-group">
+                                            <a href="#" class="btn btn-primary btn-sm" onclick="viewStudentDetails({{ student.user_id }})">View Details</a>
+                                            <a href="#" class="btn btn-warning btn-sm" onclick="resetPassword({{ student.user_id }})">Reset Password</a>
+                                            {% if student.is_active %}
+                                                <a href="#" class="btn btn-danger btn-sm" onclick="deactivateAccount({{ student.user_id }})">Deactivate</a>
+                                            {% else %}
+                                                <a href="#" class="btn btn-success btn-sm" onclick="activateAccount({{ student.user_id }})">Activate</a>
+                                            {% endif %}
+                                        </div>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="text-center">
+                        <p>No student accounts found.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Activity Stats -->
+    <div class="card mt-20">
+        <div class="card-header">
+            <h2>Student Activity Overview</h2>
+        </div>
+        <div class="card-body">
+            <div class="stats-container">
+                <div class="stat-card blue">
+                    <h3>{{ students|length }}</h3>
+                    <p>Total Students</p>
+                </div>
+                <div class="stat-card green">
+                    <h3>{{ active_students|default(0) }}</h3>
+                    <p>Active This Week</p>
+                </div>
+                <div class="stat-card orange">
+                    <h3>{{ new_students|default(0) }}</h3>
+                    <p>New This Month</p>
+                </div>
+            </div>
+
+            <div class="mt-20">
+                <h4>Search Students</h4>
+                <form action="{{ url_for('routes.manage_students') }}" method="get" class="search-form">
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <input type="text" name="search" class="form-control" placeholder="Search by name, email or username" value="{{ request.args.get('search', '') }}">
+                        </div>
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            {% if request.args.get('search') %}
+                                <a href="{{ url_for('routes.manage_students') }}" class="btn btn-secondary">Clear</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Student Details Modal (placeholder) -->
+    <div id="studentModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Student Details</h2>
+            <div id="studentDetails">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Modal functionality (placeholder for actual implementation)
+        function viewStudentDetails(userId) {
+            alert('View student details functionality would be implemented here');
+        }
+        
+        function resetPassword(userId) {
+            if (confirm('Are you sure you want to reset the password for this student?')) {
+                alert('Password reset functionality would be implemented here');
+            }
+        }
+        
+        function deactivateAccount(userId) {
+            if (confirm('Are you sure you want to deactivate this student account?')) {
+                alert('Account deactivation functionality would be implemented here');
+            }
+        }
+        
+        function activateAccount(userId) {
+            if (confirm('Are you sure you want to activate this student account?')) {
+                alert('Account activation functionality would be implemented here');
+            }
+        }
+    </script>
+{% endblock %}

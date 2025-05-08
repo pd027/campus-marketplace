@@ -1,0 +1,239 @@
+/* Form Styles */
+.form-container {
+    max-width: 600px;
+    margin: 0 auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.form-header h2 {
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.form-control {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+    transition: border-color 0.3s ease;
+}
+
+.form-control:focus {
+    border-color: #3498db;
+    outline: none;
+    box-shadow: 0 0 5px rgba(52, 152, 219, 0.3);
+}
+
+.form-control::placeholder {
+    color: #aaa;
+}
+
+select.form-control {
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+}
+
+textarea.form-control {
+    min-height: 120px;
+    resize: vertical;
+}
+
+.help-text {
+    margin-top: 5px;
+    font-size: 14px;
+    color: #777;
+}
+
+.error-text {
+    color: #e74c3c;
+    font-size: 14px;
+    margin-top: 5px;
+}
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.form-actions .btn {
+    min-width: 120px;
+}
+
+.form-group.inline {
+    display: flex;
+    align-items: center;
+}
+
+.form-group.inline label {
+    margin-right: 15px;
+    margin-bottom: 0;
+    width: 120px;
+}
+
+.form-group.inline .form-control {
+    flex: 1;
+}
+
+/* Radio and Checkbox Styles */
+.checkbox-group, .radio-group {
+    margin-bottom: 15px;
+}
+
+.checkbox-label, .radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.checkbox-input, .radio-input {
+    margin-right: 10px;
+}
+
+/* File Upload Styles */
+.file-upload {
+    position: relative;
+}
+
+.file-upload label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: #555;
+}
+
+.file-upload input[type="file"] {
+    position: absolute;
+    left: -9999px;
+}
+
+.file-upload-btn {
+    display: inline-block;
+    padding: 10px 15px;
+    background-color: #f8f9fa;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.file-upload-btn:hover {
+    background-color: #eaeaea;
+}
+
+.file-name {
+    margin-left: 10px;
+    font-size: 14px;
+}
+
+/* Auth Forms */
+.auth-form-container {
+    max-width: 400px;
+    margin: 40px auto;
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+}
+
+.auth-form-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.auth-form-header h2 {
+    font-size: 1.8rem;
+    color: #333;
+}
+
+.auth-form-footer {
+    margin-top: 25px;
+    text-align: center;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.auth-form-footer p {
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #777;
+}
+
+/* Responsive Form */
+@media (max-width: 768px) {
+    .form-container, .auth-form-container {
+        padding: 20px;
+    }
+    
+    .form-group.inline {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .form-group.inline label {
+        margin-bottom: 8px;
+        width: 100%;
+    }
+    
+    .form-actions {
+        flex-direction: column;
+    }
+    
+    .form-actions .btn {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* Price Range Input */
+.price-range {
+    display: flex;
+    align-items: center;
+}
+
+.price-range input {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.price-range span {
+    margin: 0 10px;
+}
+
+/* Form Grid */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+}
+
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}

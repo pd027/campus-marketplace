@@ -1,0 +1,328 @@
+{% extends 'base.html' %}
+
+{% block title %}Manage Requests - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Manage Borrow Requests</h1>
+        <div>
+            <a href="{{ url_for('routes.dashboard') }}" class="btn btn-secondary">Back to Dashboard</a>
+        </div>
+    </div>
+
+    <!-- Requests Filter Tabs -->
+    <div class="tabs">
+        <div class="tab active" data-tab="all-requests">All Requests</div>
+        <div class="tab" data-tab="pending-requests">Pending</div>
+        <div class="tab" data-tab="approved-requests">Approved</div>
+        <div class="tab" data-tab="completed-requests">Completed</div>
+        <div class="tab" data-tab="rejected-requests">Rejected</div>
+    </div>
+
+    <!-- All Requests Tab -->
+    <div class="tab-content active" id="all-requests">
+        <div class="card">
+            <div class="card-header">
+                <h2>All Borrow Requests</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    {% if requests %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Item</th>
+                                    <th>Owner</th>
+                                    <th>Requester</th>
+                                    <th>Request Date</th>
+                                    <th>Status</th>
+                                    <th>Return Date</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in requests %}
+                                    <tr>
+                                        <td>{{ request.request_id }}</td>
+                                        <td>{{ request.item_title }}</td>
+                                        <td>{{ request.owner_name }}</td>
+                                        <td>{{ request.requester_name }}</td>
+                                        <td>{{ request.request_date }}</td>
+                                        <td>
+                                            {% if request.status == 'pending' %}
+                                                <span class="badge badge-warning">Pending</span>
+                                            {% elif request.status == 'approved' %}
+                                                <span class="badge badge-success">Approved</span>
+                                            {% elif request.status == 'rejected' %}
+                                                <span class="badge badge-danger">Rejected</span>
+                                            {% elif request.status == 'completed' %}
+                                                <span class="badge badge-info">Completed</span>
+                                            {% endif %}
+                                        </td>
+                                        <td>{{ request.return_date or 'N/A' }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <a href="#" class="btn btn-primary btn-sm" onclick="viewRequestDetails({{ request.request_id }})">
+                                                    <i class="fas fa-eye"></i> View
+                                                </a>
+                                                {% if request.status == 'pending' %}
+                                                    <form action="{{ url_for('routes.respond_request', request_id=request.request_id) }}" method="post" class="d-inline">
+                                                        <input type="hidden" name="status" value="approved">
+                                                        <input type="date" name="return_date" class="form-control form-control-sm" style="width: 140px;" required>
+                                                        <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                                    </form>
+                                                    <form action="{{ url_for('routes.respond_request', request_id=request.request_id) }}" method="post" class="d-inline">
+                                                        <input type="hidden" name="status" value="rejected">
+                                                        <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                                    </form>
+                                                {% elif request.status == 'approved' %}
+                                                    <form action="{{ url_for('routes.respond_request', request_id=request.request_id) }}" method="post" class="d-inline">
+                                                        <input type="hidden" name="status" value="completed">
+                                                        <button type="submit" class="btn btn-info btn-sm">Mark Returned</button>
+                                                    </form>
+                                                {% endif %}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="text-center">
+                            <p>No requests found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Pending Requests Tab -->
+    <div class="tab-content" id="pending-requests">
+        <div class="card">
+            <div class="card-header">
+                <h2>Pending Borrow Requests</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    {% if pending_requests %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Item</th>
+                                    <th>Owner</th>
+                                    <th>Requester</th>
+                                    <th>Request Date</th>
+                                    <th>Notes</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in pending_requests %}
+                                    <tr>
+                                        <td>{{ request.request_id }}</td>
+                                        <td>{{ request.item_title }}</td>
+                                        <td>{{ request.owner_name }}</td>
+                                        <td>{{ request.requester_name }}</td>
+                                        <td>{{ request.request_date }}</td>
+                                        <td>{{ request.notes or 'None' }}</td>
+                                        <td>
+                                            <form action="{{ url_for('routes.respond_request', request_id=request.request_id) }}" method="post" class="d-flex">
+                                                <input type="hidden" name="status" value="approved">
+                                                <input type="date" name="return_date" class="form-control form-control-sm" style="width: 140px;" required>
+                                                <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                            </form>
+                                            <form action="{{ url_for('routes.respond_request', request_id=request.request_id) }}" method="post" class="mt-10">
+                                                <input type="hidden" name="status" value="rejected">
+                                                <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="text-center">
+                            <p>No pending requests found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Approved Requests Tab -->
+    <div class="tab-content" id="approved-requests">
+        <div class="card">
+            <div class="card-header">
+                <h2>Approved Borrow Requests</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    {% if approved_requests %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Item</th>
+                                    <th>Owner</th>
+                                    <th>Requester</th>
+                                    <th>Request Date</th>
+                                    <th>Return By</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in approved_requests %}
+                                    <tr>
+                                        <td>{{ request.request_id }}</td>
+                                        <td>{{ request.item_title }}</td>
+                                        <td>{{ request.owner_name }}</td>
+                                        <td>{{ request.requester_name }}</td>
+                                        <td>{{ request.request_date }}</td>
+                                        <td>{{ request.return_date }}</td>
+                                        <td>
+                                            <form action="{{ url_for('routes.respond_request', request_id=request.request_id) }}" method="post">
+                                                <input type="hidden" name="status" value="completed">
+                                                <button type="submit" class="btn btn-info btn-sm">Mark Returned</button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="text-center">
+                            <p>No approved requests found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Completed Requests Tab -->
+    <div class="tab-content" id="completed-requests">
+        <div class="card">
+            <div class="card-header">
+                <h2>Completed Borrow Requests</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    {% if completed_requests %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Item</th>
+                                    <th>Owner</th>
+                                    <th>Requester</th>
+                                    <th>Request Date</th>
+                                    <th>Return Date</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in completed_requests %}
+                                    <tr>
+                                        <td>{{ request.request_id }}</td>
+                                        <td>{{ request.item_title }}</td>
+                                        <td>{{ request.owner_name }}</td>
+                                        <td>{{ request.requester_name }}</td>
+                                        <td>{{ request.request_date }}</td>
+                                        <td>{{ request.return_date }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="text-center">
+                            <p>No completed requests found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Rejected Requests Tab -->
+    <div class="tab-content" id="rejected-requests">
+        <div class="card">
+            <div class="card-header">
+                <h2>Rejected Borrow Requests</h2>
+            </div>
+            <div class="card-body">
+                <div class="table-responsive">
+                    {% if rejected_requests %}
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Request ID</th>
+                                    <th>Item</th>
+                                    <th>Owner</th>
+                                    <th>Requester</th>
+                                    <th>Request Date</th>
+                                    <th>Notes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for request in rejected_requests %}
+                                    <tr>
+                                        <td>{{ request.request_id }}</td>
+                                        <td>{{ request.item_title }}</td>
+                                        <td>{{ request.owner_name }}</td>
+                                        <td>{{ request.requester_name }}</td>
+                                        <td>{{ request.request_date }}</td>
+                                        <td>{{ request.notes or 'None' }}</td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    {% else %}
+                        <div class="text-center">
+                            <p>No rejected requests found.</p>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Request Details Modal (placeholder) -->
+    <div id="requestModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Request Details</h2>
+            <div id="requestDetails">
+                <!-- Details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to current tab and corresponding content
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+
+        // Modal functionality (placeholder for actual implementation)
+        function viewRequestDetails(requestId) {
+            alert('View request details functionality would be implemented here');
+        }
+    </script>
+{% endblock %}

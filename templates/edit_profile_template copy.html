@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block title %}Edit Profile - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Edit Profile</h1>
+        <div>
+            <a href="{{ url_for('routes.user_profile') }}" class="btn btn-secondary">Back to Profile</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>Update Your Information</h2>
+        </div>
+        <div class="card-body">
+            <form method="post">
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" value="{{ user.username }}" class="form-control" disabled>
+                    <small class="form-text text-muted">Username cannot be changed</small>
+                </div>
+                
+                <div class="form-group">
+                    <label for="email">Email Address <span class="required">*</span></label>
+                    <input type="email" id="email" name="email" value="{{ user.email }}" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="full_name">Full Name <span class="required">*</span></label>
+                    <input type="text" id="full_name" name="full_name" value="{{ user.full_name }}" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="contact_number">Contact Number</label>
+                    <input type="tel" id="contact_number" name="contact_number" value="{{ user.contact_number or '' }}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="department">Department</label>
+                    <input type="text" id="department" name="department" value="{{ user.department or '' }}" class="form-control">
+                </div>
+                
+                <div class="form-group">
+                    <label for="year">Year</label>
+                    <select id="year" name="year" class="form-control">
+                        <option value="">Select Year</option>
+                        <option value="Freshman" {% if user.year == 'Freshman' %}selected{% endif %}>Freshman</option>
+                        <option value="Sophomore" {% if user.year == 'Sophomore' %}selected{% endif %}>Sophomore</option>
+                        <option value="Junior" {% if user.year == 'Junior' %}selected{% endif %}>Junior</option>
+                        <option value="Senior" {% if user.year == 'Senior' %}selected{% endif %}>Senior</option>
+                        <option value="Graduate" {% if user.year == 'Graduate' %}selected{% endif %}>Graduate</option>
+                        <option value="Faculty" {% if user.year == 'Faculty' %}selected{% endif %}>Faculty</option>
+                        <option value="Staff" {% if user.year == 'Staff' %}selected{% endif %}>Staff</option>
+                    </select>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="{{ url_for('routes.user_profile') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+{% endblock %}

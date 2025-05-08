@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+
+{% block title %}Admin Dashboard - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Admin Dashboard</h1>
+    </div>
+
+    <!-- Stats Cards -->
+    <div class="stats-container">
+        <div class="stat-card blue">
+            <h3>{{ students_count }}</h3>
+            <p>Students</p>
+        </div>
+        <div class="stat-card green">
+            <h3>{{ items_count }}</h3>
+            <p>Total Items</p>
+        </div>
+        <div class="stat-card orange">
+            <h3>{{ pending_requests|length }}</h3>
+            <p>Pending Requests</p>
+        </div>
+    </div>
+
+    <!-- Dashboard Tabs -->
+    <div class="tabs">
+        <div class="tab active" data-tab="pending-requests">Pending Requests</div>
+        <div class="tab" data-tab="quick-actions">Quick Actions</div>
+    </div>
+
+    <!-- Pending Requests Tab -->
+    <div class="tab-content active" id="pending-requests">
+        <div class="card">
+            <div class="card-header">
+                <h2>Pending Borrow Requests</h2>
+            </div>
+            <div class="card-body">
+                {% if pending_requests %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Owner</th>
+                                <th>Requester</th>
+                                <th>Request Date</th>
+                                <th>Notes</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for request in pending_requests %}
+                                <tr>
+                                    <td>{{ request.item_title }}</td>
+                                    <td>{{ request.owner_name }}</td>
+                                    <td>{{ request.requester_name }}</td>
+                                    <td>{{ request.request_date }}</td>
+                                    <td>{{ request.notes or 'None' }}</td>
+                                    <td>
+                                        <form action="{{ url_for('routes.respond_request', request_id=request.request_id) }}" method="post" class="d-flex">
+                                            <input type="hidden" name="status" value="approved">
+                                            <input type="date" name="return_date" class="form-control form-control-sm" style="width: 140px;" required>
+                                            <button type="submit" class="btn btn-success btn-sm">Approve</button>
+                                        </form>
+                                        <form action="{{ url_for('routes.respond_request', request_id=request.request_id) }}" method="post" class="mt-10">
+                                            <input type="hidden" name="status" value="rejected">
+                                            <button type="submit" class="btn btn-danger btn-sm">Reject</button>
+                                        </form>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <div class="text-center">
+                        <p>There are no pending requests at the moment.</p>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Quick Actions Tab -->
+    <div class="tab-content" id="quick-actions">
+        <div class="card">
+            <div class="card-header">
+                <h2>Administrative Actions</h2>
+            </div>
+            <div class="card-body">
+                <div class="stats-container">
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-users fa-3x mb-10" style="color: #3498db;"></i>
+                            <h3>Manage Students</h3>
+                            <p>View and manage student accounts</p>
+                            <a href="{{ url_for('routes.manage_students') }}" class="btn btn-primary">Go to Students</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-clipboard-list fa-3x mb-10" style="color: #2ecc71;"></i>
+                            <h3>Manage Requests</h3>
+                            <p>View and manage all borrow requests</p>
+                            <a href="{{ url_for('routes.manage_requests') }}" class="btn btn-primary">Go to Requests</a>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-body text-center">
+                            <i class="fas fa-boxes fa-3x mb-10" style="color: #f39c12;"></i>
+                            <h3>College Inventory</h3>
+                            <p>Manage institution-owned inventory</p>
+                            <a href="{{ url_for('routes.inventory') }}" class="btn btn-primary">Go to Inventory</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Activity -->
+    <div class="card mt-20">
+        <div class="card-header">
+            <h2>System Overview</h2>
+        </div>
+        <div class="card-body">
+            <div class="stats-container">
+                <div>
+                    <h4>Most Popular Categories</h4>
+                    <ul>
+                        <li>Electronics (42%)</li>
+                        <li>Textbooks (25%)</li>
+                        <li>Furniture (15%)</li>
+                        <li>Others (18%)</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4>Current System Status</h4>
+                    <p><span class="badge badge-success">Online</span></p>
+                    <p>Last backup: Today at 03:00 AM</p>
+                    <p>Storage usage: 45%</p>
+                </div>
+                <div>
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#">System Settings</a></li>
+                        <li><a href="#">User Reports</a></li>
+                        <li><a href="#">Transaction History</a></li>
+                        <li><a href="#">Help Resources</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Tab functionality
+            const tabs = document.querySelectorAll('.tab');
+            const tabContents = document.querySelectorAll('.tab-content');
+            
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    // Remove active class from all tabs and contents
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tabContents.forEach(c => c.classList.remove('active'));
+                    
+                    // Add active class to current tab and corresponding content
+                    this.classList.add('active');
+                    const tabId = this.getAttribute('data-tab');
+                    document.getElementById(tabId).classList.add('active');
+                });
+            });
+        });
+    </script>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}Add Inventory Item - Campus Marketplace{% endblock %}
+
+{% block content %}
+    <div class="page-header">
+        <h1>Add Inventory Item</h1>
+        <div>
+            <a href="{{ url_for('routes.inventory') }}" class="btn btn-secondary">Back to Inventory</a>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="card-header">
+            <h2>New Inventory Item Details</h2>
+        </div>
+        <div class="card-body">
+            <form action="{{ url_for('routes.add_inventory') }}" method="post">
+                <div class="form-group">
+                    <label for="item_name">Item Name</label>
+                    <input type="text" id="item_name" name="item_name" class="form-control" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" class="form-control" required>
+                        <option value="">Select a category</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Sports Equipment">Sports Equipment</option>
+                        <option value="Lab Equipment">Lab Equipment</option>
+                        <option value="Tools">Tools</option>
+                        <option value="Others">Others</option>
+                    </select>
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label for="quantity">Quantity</label>
+                        <input type="number" id="quantity" name="quantity" class="form-control" min="1" value="1" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="location">Location</label>
+                        <input type="text" id="location" name="location" class="form-control" placeholder="Building and room number" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="status">Status</label>
+                    <select id="status" name="status" class="form-control" required>
+                        <option value="available">Available</option>
+                        <option value="in_use">In Use</option>
+                        <option value="maintenance">Maintenance</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="notes">Notes (Optional)</label>
+                    <textarea id="notes" name="notes" class="form-control" rows="3" placeholder="Any additional information about the item"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Add Inventory Item</button>
+                    <a href="{{ url_for('routes.inventory') }}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Tips Card -->
+    <div class="card mt-20">
+        <div class="card-header">
+            <h2>Tips for Adding Inventory</h2>
+        </div>
+        <div class="card-body">
+            <div class="stats-container">
+                <div>
+                    <h4>Item Name</h4>
+                    <p>Use descriptive names that clearly identify the item.</p>
+                    <p>Example: "Dell XPS 15 Laptop" instead of just "Laptop"</p>
+                </div>
+                <div>
+                    <h4>Location Format</h4>
+                    <p>Use a consistent format for locations.</p>
+                    <p>Example: "Science Building, Room 301" or "Library Floor 2"</p>
+                </div>
+                <div>
+                    <h4>Categories</h4>
+                    <p>Choose the most specific category available.</p>
+                    <p>Use "Others" only when necessary.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

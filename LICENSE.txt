@@ -1,0 +1,12 @@
+Copyright © 2025 pd027
+
+All rights reserved.
+
+You are allowed to use and modify this project for personal or educational purposes.  
+You are NOT allowed to:
+- Re-upload this project to GitHub or any other platform
+- Claim this work as your own
+- Use this project for commercial purposes
+- Distribute modified or unmodified versions without permission
+
+For inquiries, please contact.

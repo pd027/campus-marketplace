@@ -1,0 +1,28 @@
+# Byte-compiled / cache files
+__pycache__/
+*.py[cod]
+*.pyo
+
+# Virtual environment
+venv/
+ENV/
+env/
+
+# Environment variables
+.env
+
+# macOS system files
+.DS_Store
+
+# Editor/IDE config
+.vscode/
+.idea/
+
+# Instance folder (if used for configs or uploads)
+instance/
+
+# Uploaded files (if any)
+uploads/
+
+# Pytest cache
+.pytest_cache/

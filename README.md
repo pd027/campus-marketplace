@@ -35,3 +35,5 @@ Author
 Pravat Ranjan Dash
 Second-year student
 Project for DBMS course
+
+📄 License: Custom — Personal use only. Reuse, re-upload, or redistribution is not permitted. See [LICENSE](LICENSE) for details.
